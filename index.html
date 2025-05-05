@@ -6,8 +6,8 @@
     <title>Pip-Boy</title>
     <style>
         body {
-            font-family: monospace;
-            background-color: #0f0; /* Classic green */
+            font-family: 'Courier New', monospace;
+            background-color: #0f0;
             color: #0f0;
             margin: 0;
             display: flex;
@@ -17,22 +17,50 @@
         }
 
         .pipboy {
-            background-color: #222;
+            background-color: #181818;
             border: 2px solid #0f0;
-            border-radius: 10px;
-            padding: 20px;
-            width: 300px;
-            box-shadow: 0 0 10px #0f0;
+            border-radius: 15px;
+            padding: 25px;
+            width: 350px;
+            box-shadow: 0 0 15px #0f0;
+            position: relative;
+        }
+
+        .top-bar {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7em;
+            opacity: 0.8;
         }
 
         .screen {
-            background-color: #111;
+            background-color: #101010;
             border: 1px solid #0f0;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 20px;
+            margin-bottom: 18px;
             position: relative;
-            overflow: hidden; /* To contain the sections */
-            height: 200px; /* Adjust as needed */
+            overflow: hidden;
+            height: 220px;
+        }
+
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.1) 0px,
+                rgba(0, 255, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
         }
 
         .menu-item {
@@ -41,61 +69,183 @@
             left: 0;
             width: 100%;
             opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+            transition: opacity 0.2s ease-in-out;
         }
 
         .menu-item.active {
             opacity: 1;
         }
 
-        .slider-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        .menu-item h3 {
+            margin-top: 0;
             margin-bottom: 10px;
+            font-size: 1.2em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
         }
 
-        .slider-button {
+        .item-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .item-list li {
+            display: flex;
+            align-items: center;
+            padding-bottom: 8px;
+            border-bottom: 1px dotted #0f0;
+            margin-bottom: 8px;
+        }
+
+        .item-list li:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .item-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 10px;
             background-color: #333;
-            color: #0f0;
             border: 1px solid #0f0;
-            padding: 5px 10px;
-            cursor: pointer;
-            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-size: 0.8em;
+        }
+
+        .item-details {
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-weight: bold;
+            color: #98ff98;
+        }
+
+        .item-count {
+            font-size: 0.8em;
+            color: #0f0;
         }
 
         .data-display {
             font-size: 0.9em;
+            line-height: 1.4;
+        }
+
+        .data-display strong {
+            color: #98ff98;
+        }
+
+        .cap-counter {
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dotted #0f0;
+            font-size: 1em;
+        }
+
+        .cap-counter strong {
+            color: #ffd700; /* Gold color for caps */
+        }
+
+        .slider-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .slider-button {
+            background-color: #282828;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 6px 12px;
+            cursor: pointer;
+            border-radius: 7px;
+            font-size: 0.9em;
+            transition: background-color 0.15s ease-in-out;
+        }
+
+        .slider-button:hover {
+            background-color: #333;
+        }
+
+        .pipboy::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 3px solid #0f0;
+            border-radius: 18px;
+            pointer-events: none;
         }
     </style>
 </head>
 <body>
     <div class="pipboy">
+        <div class="top-bar">
+            <span>PIP-BOY 3000</span>
+            <span>Vault 101</span>
+        </div>
         <div class="screen">
+            <div class="scanlines"></div>
             <div id="menu-0" class="menu-item active">
                 <h3>STATUS</h3>
                 <div class="data-display">
-                    HP: 100/100<br>
-                    AP: 50/50<br>
-                    Level: 5
+                    <strong>HP:</strong> 100/100<br>
+                    <strong>AP:</strong> 50/50<br>
+                    <strong>Rad:</strong> 0<br>
+                    <strong>Level:</strong> 5
+                </div>
+                <div class="cap-counter">
+                    <strong>CAPS:</strong> 125
                 </div>
             </div>
             <div id="menu-1" class="menu-item">
                 <h3>ITEMS</h3>
-                <ul>
-                    <li>Stimpak</li>
-                    <li>RadAway</li>
-                    <li>Bobby Pin</li>
+                <ul class="item-list">
+<li>
+    <img src="stimpak.png" alt="Stimpak" class="item-icon">
+    <div class="item-details">
+        <span class="item-name">Stimpak</span> <span class="item-count">(x3)</span>
+    </div>
+</li>
+                    <li>
+<img src="stimpak.png" alt="Stimpak" class="item-icon">
+    <div class="item-details">
+                            <span class="item-name">RadAway</span> <span class="item-count">(x5)</span>
+                        </div>
+                    </li>
+                    <li>
+        <img src="stimpak.png" alt="Stimpak" class="item-icon">
+    <div class="item-details">
+                            <span class="item-name">Bobby Pin</span> <span class="item-count">(x12)</span>
+                        </div>
+                    </li>
+                    <li><img src="stimpak.png" alt="Stimpak" class="item-icon">
+             <div class="item-details">                            
+        <span class="item-name">Nuka-Cola</span> <span class="item-count">(x2)</span>
+                        </div>
+                    </li>
                 </ul>
             </div>
             <div id="menu-2" class="menu-item">
                 <h3>DATA</h3>
-                <p>No new data entries.</p>
+                <p class="data-display">
+                    <strong>[001] Broadcast Frequency:</strong><br>
+                    "...static...can anyone hear me? This is...Vault 21...need assistance..."
+                </p>
+                <p class="data-display">
+                    <strong>[002] Local Map:</strong><br>
+                    [Static Representation]
+                </p>
             </div>
             <div id="menu-3" class="menu-item">
                 <h3>MAP</h3>
-                <p>[Static Map Image Placeholder]</p>
+                <p class="data-display">[Interactive Map Placeholder - Would require more advanced techniques]</p>
+                <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Static Map Placeholder" style="max-width: 100%;">
+                <p class="data-display">(Loading...)</p>
             </div>
         </div>
         <div class="slider-container">
@@ -115,4 +265,4 @@
         }
     </script>
 </body>
-</html>
+                                                  </html>
