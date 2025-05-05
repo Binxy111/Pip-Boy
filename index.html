@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pip-Boy</title>
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #0f0; /* Classic green */
+            color: #0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .pipboy {
+            background-color: #222;
+            border: 2px solid #0f0;
+            border-radius: 10px;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 0 10px #0f0;
+        }
+
+        .screen {
+            background-color: #111;
+            border: 1px solid #0f0;
+            padding: 15px;
+            margin-bottom: 15px;
+            position: relative;
+            overflow: hidden; /* To contain the sections */
+            height: 200px; /* Adjust as needed */
+        }
+
+        .menu-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .menu-item.active {
+            opacity: 1;
+        }
+
+        .slider-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .slider-button {
+            background-color: #333;
+            color: #0f0;
+            border: 1px solid #0f0;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 0.8em;
+        }
+
+        .data-display {
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class="pipboy">
+        <div class="screen">
+            <div id="menu-0" class="menu-item active">
+                <h3>STATUS</h3>
+                <div class="data-display">
+                    HP: 100/100<br>
+                    AP: 50/50<br>
+                    Level: 5
+                </div>
+            </div>
+            <div id="menu-1" class="menu-item">
+                <h3>ITEMS</h3>
+                <ul>
+                    <li>Stimpak</li>
+                    <li>RadAway</li>
+                    <li>Bobby Pin</li>
+                </ul>
+            </div>
+            <div id="menu-2" class="menu-item">
+                <h3>DATA</h3>
+                <p>No new data entries.</p>
+            </div>
+            <div id="menu-3" class="menu-item">
+                <h3>MAP</h3>
+                <p>[Static Map Image Placeholder]</p>
+            </div>
+        </div>
+        <div class="slider-container">
+            <button class="slider-button" onclick="showMenu(0)">STATUS</button>
+            <button class="slider-button" onclick="showMenu(1)">ITEMS</button>
+            <button class="slider-button" onclick="showMenu(2)">DATA</button>
+            <button class="slider-button" onclick="showMenu(3)">MAP</button>
+        </div>
+    </div>
+
+    <script>
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        function showMenu(index) {
+            menuItems.forEach(item => item.classList.remove('active'));
+            menuItems[index].classList.add('active');
+        }
+    </script>
+</body>
+</html>
